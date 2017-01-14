@@ -85,44 +85,37 @@ public class ConsoleUI
         while (true)
         {
             String userInputString = userInput.readLine();
-            String[] input = userInputString.split(" ");
-
-            //Make sure user input is not empty
-            if (input.length == 0)
-            {
-                printUnknownCommand();
-                continue;
-            }
+            String[] arguments = splitUserInput(userInputString);
 
             //Determine which user command was used
-            switch (input[0])
+            switch (arguments[0])
             {
                 case "help":
                     printHelpCommands();
                     break;
                 case "read":
-                    if (input.length < 3)
+                    if (arguments[1] == null || arguments[2] == null)
                     {
                         printUnknownCommand();
                         continue;
                     }
-                    readCommandUsed(input[1], input[2]);
+                    readCommandUsed(arguments[1], arguments[2]);
                     break;
                 case "add":
-                    if (input.length < 3)
+                    if (arguments[1] == null || arguments[2] == null)
                     {
                         printUnknownCommand();
                         continue;
                     }
-                    addCommandUsed(input[1], input[2]);
+                    addCommandUsed(arguments[1], arguments[2]);
                     break;
                 case "print":
-                    if (input.length < 2)
+                    if (arguments[1] == null)
                     {
                         printUnknownCommand();
                         continue;
                     }
-                    printCommandUsed(input[1]);
+                    printCommandUsed(arguments[1]);
                     break;
                 case "quit":
                     System.out.println("Goodbye!");
@@ -132,6 +125,35 @@ public class ConsoleUI
                     break;
             }
         }
+    }
+
+    private String[] splitUserInput(String userInputString)
+    {
+        String[] result = new String[3];
+
+        userInputString = userInputString.trim();
+
+        int firstSpaceIndex = userInputString.indexOf(' ');
+
+        if (firstSpaceIndex == -1)
+        {
+            result[0] = userInputString;
+            return result;
+        }
+
+        result[0] = userInputString.substring(0, firstSpaceIndex);
+
+        int secondSpaceIndex = userInputString.indexOf(' ', firstSpaceIndex + 1);
+
+        if (secondSpaceIndex == -1)
+        {
+            result[1] = userInputString.substring(firstSpaceIndex + 1).trim();
+            return result;
+        }
+
+        result[1] = userInputString.substring(firstSpaceIndex + 1, secondSpaceIndex).trim();
+        result[2] = userInputString.substring(secondSpaceIndex + 1).trim();
+        return result;
     }
 
     /**

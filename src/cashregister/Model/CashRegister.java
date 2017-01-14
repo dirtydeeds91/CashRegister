@@ -11,7 +11,7 @@ import java.util.List;
 public class CashRegister
 {
     private List<Receipt> receiptHistory;
-    private Receipt currentReceipt;
+    private int currentReceiptId;
 
     /**
      * Initializes the starting values of the list of receipts
@@ -19,6 +19,7 @@ public class CashRegister
      */
     public CashRegister(StoreAssortment storeAssortment)
     {
+        this.currentReceiptId = -1;
         this.receiptHistory = new ArrayList<>();
     }
 
@@ -27,12 +28,9 @@ public class CashRegister
      */
     public void startNewReceipt()
     {
-        if (this.currentReceipt != null)
-        {
-            this.receiptHistory.add(this.currentReceipt);
-        }
-
-        this.currentReceipt = new Receipt();
+        Receipt newReceipt = new Receipt();
+        this.receiptHistory.add(newReceipt);
+        this.currentReceiptId = this.receiptHistory.size() - 1;
     }
 
     /**
@@ -40,12 +38,11 @@ public class CashRegister
      * @param barcode Barcode of the product
      * @param store Store holder
      */
-    public void addProductToReceipt(String barcode, StoreAssortment store)
+    public void addProductToReceipt(String barcode, StoreAssortment store) throws ArrayIndexOutOfBoundsException
     {
-        if (currentReceipt == null)
+        if (this.currentReceiptId < 0)
         {
-            System.out.println("No receipt started yet.");
-            return;
+            throw new ArrayIndexOutOfBoundsException("No receipts started yet.");
         }
 
         //Check if the store has this product
@@ -57,10 +54,9 @@ public class CashRegister
         }
 
         Product productInStore = store.getProduct(barcode);
+        Receipt currentReceipt = getCurrentReceipt();
         currentReceipt.addProductToReceipt(productInStore);
     }
-
-
 
     /**
      * Getter method that retrieves the current receipt (if there is one)
@@ -68,7 +64,7 @@ public class CashRegister
      */
     public Receipt getCurrentReceipt()
     {
-        return this.currentReceipt;
+        return this.receiptHistory.get(this.currentReceiptId);
     }
 
     /**
