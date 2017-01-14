@@ -118,7 +118,7 @@ public class Product
         //Only return discounted price if there is a discount and more than the minimum quantity is bought
         if (hasDiscount() && boughtAmount >= this.discount.getMinQuantity())
         {
-            return this.discount.getDiscountedPrice();
+            return this.discount.getDiscountedPrice(boughtAmount);
         }
 
         //Discounted price cannot be used, return normal price

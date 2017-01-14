@@ -184,7 +184,7 @@ public class Receipt
                     String rabatString = String.format(
                             lineWithPriceFormat,
                             "RABAT",
-                            priceFormat.format(rabat));
+                            priceFormat.format(rabat / 100.0));
 
                     //Add it to the final string, with a "-" at the end as specified
                     builder.append(rabatString + "-\n");
