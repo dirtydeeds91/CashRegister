@@ -1,9 +1,13 @@
 package cashregister.View;
 
 import cashregister.Controller.Controller;
-import cashregister.Controller.HelperFunctions;
 import cashregister.Model.*;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -11,16 +15,19 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * The program's main execution class.
+ * The console GUI for the cash register.
  */
-public class CashRegisterUI
+public class ConsoleUI
 {
-    private static Controller controller;
+    private Controller controller;
 
-    public static void main(String[] args)
+    public ConsoleUI(Controller controller)
     {
-        controller = new Controller();
+        this.controller = controller;
+    }
 
+    public void startProgram(String[] args) throws IOException
+    {
         //If there is a file passed as a command line argument, it is the store
         boolean hasPopulatedStore = false;
         if (args.length > 0)
@@ -48,13 +55,14 @@ public class CashRegisterUI
         }
 
         //Used to read user commands
-        Scanner userInput = new Scanner(System.in);
+        InputStreamReader userInputReader = new InputStreamReader(System.in);
+        BufferedReader userInput = new BufferedReader(userInputReader);
 
         //First, ask the user to provide a prices text file because the store is still empty
         if (!hasPopulatedStore)
         {
             System.out.print("Please provide a text file for the prices: ");
-            String pricesFile = userInput.next();
+            String pricesFile = userInput.readLine();
             controller.populateStore(pricesFile);
         }
 
@@ -62,7 +70,7 @@ public class CashRegisterUI
         if (!hasAddedDiscounts)
         {
             System.out.print("You can provide a text file for the discounts: ");
-            String discountsFile = userInput.next();
+            String discountsFile = userInput.readLine();
             controller.generateDiscounts(discountsFile);
         }
 
@@ -70,15 +78,13 @@ public class CashRegisterUI
         handleUserInput(userInput);
     }
 
-    private static void handleUserInput(Scanner userInput)
+    private void handleUserInput(BufferedReader userInput) throws IOException
     {
-        //From now on, we need to read the whole line
-        userInput.useDelimiter("\\n");
         System.out.println("\nPlease provide a command. Use \"help\" to list all commands.\n");
 
-        while (userInput.hasNext())
+        while (true)
         {
-            String userInputString = userInput.next();
+            String userInputString = userInput.readLine();
             String[] input = userInputString.split(" ");
 
             //Make sure user input is not empty
@@ -131,27 +137,33 @@ public class CashRegisterUI
     /**
      * Prints a friendly message to the user that the command was not recognized.
      */
-    private static void printUnknownCommand()
+    private void printUnknownCommand()
     {
         System.out.println("Unknown command. Use \"help\" to see all command.");
     }
 
-    private static void readCommandUsed(String type, String fileName)
+    private void readCommandUsed(String type, String fileName)
     {
-        switch (type)
+        try
         {
-            case "product":
-                controller.populateStore(fileName);
-                break;
-            case "discount":
-                controller.generateDiscounts(fileName);
-                break;
-            case "receipt":
-                 controller.generateReceiptFromFile(fileName);
-                break;
-            default:
-                printUnknownCommand();
-                break;
+            switch (type) {
+                case "product":
+                    controller.populateStore(fileName);
+                    break;
+                case "discount":
+                    controller.generateDiscounts(fileName);
+                    break;
+                case "receipt":
+                    controller.generateReceiptFromFile(fileName);
+                    break;
+                default:
+                    printUnknownCommand();
+                    break;
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("The file \"" + fileName + "\" was not found.");
         }
     }
 
@@ -161,7 +173,7 @@ public class CashRegisterUI
      * @param type Type of the add command - product, discount, or receipt
      * @param param Second argument, used to define the product, the discount, or the receipt
      */
-    private static void addCommandUsed(String type, String param)
+    private void addCommandUsed(String type, String param)
     {
         switch (type)
         {
@@ -193,7 +205,7 @@ public class CashRegisterUI
         }
     }
 
-    private static void printCommandUsed(String currentOrAll)
+    private void printCommandUsed(String currentOrAll)
     {
         if (currentOrAll.equals("all"))
         {
@@ -232,18 +244,26 @@ public class CashRegisterUI
         }
         else
         {
-            //If the command is not "all" or "current", it should be a file
-            controller.generateReceiptFromFile(currentOrAll);
-            Receipt generatedReceipt = controller.getCashRegister().getCurrentReceipt();
+            try
+            {
+                //If the command is not "all" or "current", it should be a file
+                controller.generateReceiptFromFile(currentOrAll);
 
-            System.out.println(generatedReceipt.toString());
+                Receipt generatedReceipt = controller.getCashRegister().getCurrentReceipt();
+
+                System.out.println(generatedReceipt.toString());
+            }
+            catch (FileNotFoundException e)
+            {
+                System.out.println("The file \"" + currentOrAll + "\" was not found.");
+            }
         }
     }
 
     /**
      * Prints all possible commands to the terminal
      */
-    private static void printHelpCommands()
+    private void printHelpCommands()
     {
         System.out.println("Possible commands:");
 

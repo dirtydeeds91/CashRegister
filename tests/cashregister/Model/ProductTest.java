@@ -12,7 +12,7 @@ public class ProductTest
     @Test
     public void productTest()
     {
-        Product product = new Product("012345678", "Fruit", "Apple", 5.12);
+        Product product = new Product("012345678", "Fruit", "Apple", 512);
         assertEquals("012345678", product.getBarcode());
         assertEquals("Fruit", product.getCategory());
         assertEquals("Apple", product.getProductName());
@@ -24,8 +24,8 @@ public class ProductTest
     @Test
     public void discountedProductTest()
     {
-        Product product = new Product("012345678", "Fruit", "Apple", 5.12);
-        Discount discount = new Discount(5, 4.12);
+        Product product = new Product("012345678", "Fruit", "Apple", 512);
+        Discount discount = new Discount(5, 412);
         assertEquals(5.12, product.finalPricePerUnit(5), 1e-15);
         assertEquals(5.12, product.getPrice(), 1e-15);
         product.addDiscount(discount);
@@ -63,6 +63,6 @@ public class ProductTest
     @Test(expected = IllegalArgumentException.class)
     public void negativePriceTest()
     {
-        Product product = new Product("Test", "Negative", "Price", -5.12);
+        Product product = new Product("Test", "Negative", "Price", -512);
     }
 }

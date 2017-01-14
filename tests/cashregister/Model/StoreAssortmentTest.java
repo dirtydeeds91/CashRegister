@@ -20,10 +20,10 @@ public class StoreAssortmentTest
     {
         this.store = new StoreAssortment();
 
-        Product sampleProduct = new Product("12345", "Fruit", "Apple", 10.2);
+        Product sampleProduct = new Product("12345", "Fruit", "Apple", 1002);
         this.store.addNewProduct(sampleProduct);
 
-        Discount discount = new Discount(10, 8.2);
+        Discount discount = new Discount(10, 820);
         this.store.addNewDiscount("12345", discount);
     }
 

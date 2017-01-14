@@ -8,14 +8,14 @@ package cashregister.Model;
 public class Discount
 {
     private int minQuantity;
-    private double discountedPrice;
+    private int discountedPrice;
 
     /**
      * Constructor that initializes a new discount object
      * @param minQuantity The minimum quantity that needs to be bought in order to activate the discount
      * @param discountedPrice The new price
      */
-    public Discount(int minQuantity, double discountedPrice)
+    public Discount(int minQuantity, int discountedPrice)
     {
         if (discountedPrice < 0)
         {
@@ -39,7 +39,7 @@ public class Discount
      * Getter method for retrieving the discounted price of a product
      * @return The new price of a product whenever a discount is activated
      */
-    public double getDiscountedPrice()
+    public int getDiscountedPrice()
     {
         return this.discountedPrice;
     }

@@ -1,6 +1,6 @@
 package cashregister.Model;
 
-import cashregister.Controller.HelperFunctions;
+import cashregister.HelperFunctions;
 
 import java.util.ArrayList;
 import java.util.List;

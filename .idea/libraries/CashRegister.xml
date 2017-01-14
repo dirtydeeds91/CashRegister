@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CashRegister">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/CashRegister.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

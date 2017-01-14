@@ -71,7 +71,7 @@ public class Receipt
      */
     public double calculateTotalPrice()
     {
-        double totalPrice = 0;
+        int totalPrice = 0;
 
         //Go through every product in the receipt
         for (Map.Entry<Product, Integer> productBought : this.productsBought.entrySet())
@@ -83,7 +83,7 @@ public class Receipt
             totalPrice += calculatePriceOneProduct(productBought.getKey(), boughtAmount, false);
         }
 
-        return totalPrice;
+        return (double)totalPrice / 100.0;
     }
 
     /**
@@ -98,12 +98,12 @@ public class Receipt
         if (doNotUseDiscount)
         {
             //Specifically use normal price only, without thinking about discount
-            return product.getPrice() * boughtAmount;
+            return (double)(product.getPrice() * boughtAmount);
         }
         else
         {
             //Use discount if possible
-            return product.finalPricePerUnit(boughtAmount) * boughtAmount;
+            return (double)(product.finalPricePerUnit(boughtAmount) * boughtAmount);
         }
     }
 
@@ -144,6 +144,7 @@ public class Receipt
             {
                 //Get the bought quantity of the product
                 int quantityBought = this.productsBought.get(product);
+                double productPrice = this.calculatePriceOneProduct(product, quantityBought, true) / 100.0;
 
                 //If the product is bought only once, the price is on the same line
                 if (quantityBought == 1)
@@ -152,7 +153,7 @@ public class Receipt
                     String productWithPrice = String.format(
                             lineWithPriceFormat,
                             product.getProductName(),
-                            priceFormat.format(product.getPrice()));
+                            priceFormat.format(productPrice));
 
                     //Add the product and price to the final string
                     builder.append(productWithPrice + "\n");
@@ -162,14 +163,11 @@ public class Receipt
                     //The price needs to be on a separate line. Since there's nothing to the right, do not align
                     builder.append(product.getProductName() + "\n");
 
-                    //Calculate the total price for all quantities bought. ALWAYS without discount here
-                    double totalPrice = calculatePriceOneProduct(product, quantityBought, true);
-
                     //Generate the line that holds the quantity of the product, price per unit, and total price
                     String quantityWithPrice = String.format(
                             lineWithPriceFormat,
-                            " " + quantityBought + " x " + priceFormat.format(product.getPrice()),
-                            priceFormat.format(totalPrice));
+                            " " + quantityBought + " x " + priceFormat.format((double)product.getPrice() / 100.0),
+                            priceFormat.format(productPrice));
 
                     //Add the quantity and total price to the final string
                     builder.append(quantityWithPrice + "\n");

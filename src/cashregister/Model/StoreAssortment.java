@@ -1,11 +1,11 @@
 package cashregister.Model;
 
-import cashregister.Controller.HelperFunctions;
-
+import cashregister.HelperFunctions;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
 
 /**
  * Contains all products that are sold at a store.
@@ -103,7 +103,7 @@ public class StoreAssortment
 
             //Generate price
             //The kroner are the 4th element of the array, ore are the 5th
-            double productPrice = HelperFunctions.generatePrice(separateProperties[3].trim(), separateProperties[4].trim());
+            int productPrice = HelperFunctions.generatePrice(separateProperties[3].trim(), separateProperties[4].trim());
 
             try
             {
@@ -149,7 +149,7 @@ public class StoreAssortment
             }
 
             //Third and fourth elements are the discounted price
-            double discountPrice = HelperFunctions.generatePrice(separateProperties[2].trim(), separateProperties[3].trim());
+            int discountPrice = HelperFunctions.generatePrice(separateProperties[2].trim(), separateProperties[3].trim());
 
             //Create the discount object
             Discount discount = new Discount(minAmount, discountPrice);

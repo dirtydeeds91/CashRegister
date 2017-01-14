@@ -1,6 +1,6 @@
 package cashregister;
 
-import cashregister.Controller.HelperFunctions;
+import cashregister.HelperFunctions;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

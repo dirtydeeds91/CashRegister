@@ -12,7 +12,7 @@ public class DiscountTest
     @Test
     public void productTest()
     {
-        Discount discount = new Discount(5, 2.12);
+        Discount discount = new Discount(5, 212);
         assertEquals(5, discount.getMinQuantity());
         assertEquals(2.12, discount.getDiscountedPrice(), 1e-15);
     }

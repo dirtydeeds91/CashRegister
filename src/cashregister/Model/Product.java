@@ -11,7 +11,7 @@ public class Product
     private String barcode;
     private String category;
     private String productName;
-    private double price;
+    private int price;
     private Discount discount;
 
     /**
@@ -21,7 +21,7 @@ public class Product
      * @param productName The new product's name
      * @param price The new product's price
      */
-    public Product(String barcode, String category, String productName, double price)
+    public Product(String barcode, String category, String productName, int price)
     {
         //Ensures that the product's details are not null
         if (barcode == null ||
@@ -84,7 +84,7 @@ public class Product
      * Getter method for retrieving the price of a product (per unit)
      * @return The price of the product (per unit)
      */
-    public double getPrice()
+    public int getPrice()
     {
         return this.price;
     }
@@ -113,7 +113,7 @@ public class Product
      * @param boughtAmount The amount of this product that was bought (per unit)
      * @return The final price of the product - discounted price if enough amount is bought, normal price otherwise
      */
-    public double finalPricePerUnit(int boughtAmount)
+    public int finalPricePerUnit(int boughtAmount)
     {
         //Only return discounted price if there is a discount and more than the minimum quantity is bought
         if (hasDiscount() && boughtAmount >= this.discount.getMinQuantity())

@@ -1,8 +1,10 @@
 package cashregister.Controller;
 
+import cashregister.HelperFunctions;
 import cashregister.Model.CashRegister;
 import cashregister.Model.StoreAssortment;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -33,7 +35,7 @@ public class Controller
      * Reads a text file and generates the store's assortment based on the data in it
      * @param fileName Location of text file
      */
-    public void populateStore(String fileName)
+    public void populateStore(String fileName) throws FileNotFoundException
     {
         //Read the file
         List<String> linesInFile = HelperFunctions.readAllStringsInFile(fileName);
@@ -51,7 +53,7 @@ public class Controller
      * @param fileName Location of text file
      * @return A receipt generated from the text file
      */
-    public void generateReceiptFromFile(String fileName)
+    public void generateReceiptFromFile(String fileName) throws FileNotFoundException
     {
         //Create a new receipt and close old one (if there is one)
         this.cashRegister.startNewReceipt();
@@ -72,7 +74,7 @@ public class Controller
      * Reads a text file and generates the discounts available in the store
      * @param fileName Location of text file
      */
-    public void generateDiscounts(String fileName)
+    public void generateDiscounts(String fileName) throws FileNotFoundException
     {
         //Read the file
         List<String> linesInFile = HelperFunctions.readAllStringsInFile(fileName);
