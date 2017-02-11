@@ -1,5 +1,7 @@
 package cashregister.Model;
 
+import cashregister.Model.Product.Product;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
@@ -98,12 +100,12 @@ public class Receipt
         if (doNotUseDiscount)
         {
             //Specifically use normal price only, without thinking about discount
-            return (double)(product.getPrice() * boughtAmount);
+            return (double)(product.getBasePrice() * boughtAmount);
         }
         else
         {
             //Use discount if possible
-            return (double)(product.finalPricePerUnit(boughtAmount) * boughtAmount);
+            return (double)(product.getFinalPrice(boughtAmount) * boughtAmount);
         }
     }
 
@@ -166,7 +168,7 @@ public class Receipt
                     //Generate the line that holds the quantity of the product, price per unit, and total price
                     String quantityWithPrice = String.format(
                             lineWithPriceFormat,
-                            " " + quantityBought + " x " + priceFormat.format((double)product.getPrice() / 100.0),
+                            " " + quantityBought + " x " + priceFormat.format((double)product.getBasePrice() / 100.0),
                             priceFormat.format(productPrice));
 
                     //Add the quantity and total price to the final string
@@ -174,7 +176,7 @@ public class Receipt
                 }
 
                 //Add the discount if there is one
-                if (product.finalPricePerUnit(quantityBought) != product.getPrice())
+                if (product.getFinalPrice(quantityBought) != product.getBasePrice())
                 {
                     //Calculate how much the discount is
                     double rabat = calculatePriceOneProduct(product, quantityBought, true) -

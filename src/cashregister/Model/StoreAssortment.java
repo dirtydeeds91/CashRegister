@@ -1,8 +1,9 @@
 package cashregister.Model;
 
 import cashregister.HelperFunctions;
+import cashregister.Model.Product.Product;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -68,9 +69,9 @@ public class StoreAssortment
     /**
      * Adds a new discount to a product in the store's assortment
      * @param barcode Barcode of the product that will have a discount added
-     * @param discountToAdd Discount that is to be added to a product
+     * @param priceToAdd Price that is to be added to a product
      */
-    public void addNewDiscount(String barcode, Discount discountToAdd)
+    public void addNewDiscount(String barcode, int discountQuantity, int priceToAdd)
     {
         if (!hasProduct(barcode))
         {
@@ -79,7 +80,7 @@ public class StoreAssortment
         else
         {
             Product product = this.allProducts.get(barcode);
-            product.addDiscount(discountToAdd);
+            product.addDiscount(discountQuantity, priceToAdd);
         }
     }
 
@@ -151,11 +152,8 @@ public class StoreAssortment
             //Third and fourth elements are the discounted price
             int discountPrice = HelperFunctions.generatePrice(separateProperties[2].trim(), separateProperties[3].trim());
 
-            //Create the discount object
-            Discount discount = new Discount(minAmount, discountPrice);
-
-            //Add the discount to its associated product
-            addNewDiscount(barcode, discount);
+            //Add the price to its associated product
+            addNewDiscount(barcode, minAmount, discountPrice);
         }
         else
         {

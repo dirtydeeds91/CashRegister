@@ -1,6 +1,7 @@
 package cashregister.Model;
 
 import cashregister.HelperFunctions;
+import cashregister.Model.Product.Product;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -23,8 +23,8 @@ public class StoreAssortmentTest
         Product sampleProduct = new Product("12345", "Fruit", "Apple", 1002);
         this.store.addNewProduct(sampleProduct);
 
-        Discount discount = new Discount(10, 820);
-        this.store.addNewDiscount("12345", discount);
+        Price price = new Price(10, 820);
+        this.store.addNewDiscount("12345", price);
     }
 
     @After
@@ -59,6 +59,6 @@ public class StoreAssortmentTest
     @Test(expected = NoSuchElementException.class)
     public void testAddDiscountToNonexistingProduct()
     {
-        this.store.addNewDiscount("nonexisting", new Discount(10, 10));
+        this.store.addNewDiscount("nonexisting", new Price(10, 10));
     }
 }

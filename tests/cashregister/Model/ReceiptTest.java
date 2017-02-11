@@ -1,5 +1,6 @@
 package cashregister.Model;
 
+import cashregister.Model.Product.Product;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,8 +34,7 @@ public class ReceiptTest
 
         //Portokal - orange in bulgarian
         Product c = new Product("45678", "Fruit", "Portokal", 12);
-        Discount cDiscount = new Discount(5, 5);
-        c.addDiscount(cDiscount);
+        c.addDiscount(5, 5);
 
         this.receipt.addProductToReceipt(a);
         this.receipt.addProductToReceipt(a);
