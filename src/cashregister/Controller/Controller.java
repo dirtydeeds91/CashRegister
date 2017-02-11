@@ -8,32 +8,51 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
- * Created by ivanm on 16-Dec-16.
+ * The {@code Controller} class communicates between the <em>UI</em> class
+ * and all the <em>model</em> classes.
+ *
+ * @author Ivan Mladenov
  */
 public class Controller
 {
     private StoreAssortment storeAssortment;
     private CashRegister cashRegister;
 
+    /**
+     * Initializes the store Assortment and the history keeper
+     */
     public Controller()
     {
         this.storeAssortment = new StoreAssortment();
         this.cashRegister = new CashRegister(this.storeAssortment);
     }
 
+    /**
+     * Getter method for the <em>CashRegister</em> object.
+     *
+     * @return The CashRegister object
+     */
     public CashRegister getCashRegister()
     {
         return this.cashRegister;
     }
 
+    /**
+     * Getter method for the <em>StoreAssortment</em> object.
+     *
+     * @return The StoreAssortment object
+     */
     public StoreAssortment getStoreAssortment()
     {
         return this.storeAssortment;
     }
 
     /**
-     * Reads a text file and generates the store's assortment based on the data in it
+     * Reads a <em>text file</em> and generates the <em>store assortment based</em> on the data in it
+     *
      * @param fileName Location of text file
+     *
+     * @throws FileNotFoundException if the text file doesn't exist
      */
     public void populateStore(String fileName) throws FileNotFoundException
     {
@@ -49,9 +68,13 @@ public class Controller
     }
 
     /**
-     * Generates a receipt with items that are bought based on a text file
+     * Generates a single <em>receipt</em> with items that are bought based on a <em>text file</em>.
+     *
      * @param fileName Location of text file
+     *
      * @return A receipt generated from the text file
+     *
+     * @throws FileNotFoundException if the file doesn't exist
      */
     public void generateReceiptFromFile(String fileName) throws FileNotFoundException
     {
@@ -71,8 +94,12 @@ public class Controller
 
 
     /**
-     * Reads a text file and generates the discounts available in the store
+     * Reads a <em>text file</em> and generates <em>discounts</em> which
+     * will be available in the <em>store</em>.
+     *
      * @param fileName Location of text file
+     *
+     * @throws FileNotFoundException if the file doesn't exist
      */
     public void generateDiscounts(String fileName) throws FileNotFoundException
     {

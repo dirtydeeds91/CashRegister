@@ -56,7 +56,7 @@ public class ProductTest
         assertEquals(400, product.getFinalPrice(5));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void nullContentsTest()
     {
         new Product(null, null, null, 5);

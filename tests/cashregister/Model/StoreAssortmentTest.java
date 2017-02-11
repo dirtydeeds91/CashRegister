@@ -1,5 +1,6 @@
 package cashregister.Model;
 
+import cashregister.Model.Product.Product;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +10,9 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 
 /**
- * Created by ivanm on 15-Dec-16.
+ * Tests the {@code StoreAssortment} class
+ *
+ * @author Ivan Mladenov
  */
 public class StoreAssortmentTest
 {
@@ -20,11 +23,9 @@ public class StoreAssortmentTest
     {
         this.store = new StoreAssortment();
 
-        Product sampleProduct = new Product("12345", "Fruit", "Apple", 1002);
-        this.store.addNewProduct(sampleProduct);
+        this.store.addNewProductToStore("12345,Fruit,Apple,10,2");
 
-        Price price = new Price(10, 820);
-        this.store.addNewDiscount("12345", price);
+        this.store.addNewDiscountToStore("12345,10,5,0");
     }
 
     @After
@@ -37,28 +38,41 @@ public class StoreAssortmentTest
     public void testAssortment()
     {
         assertTrue(this.store.hasProduct("12345"));
-        assertTrue(this.store.getProduct("12345").hasDiscount());
+        assertEquals("12345", this.store.getProduct("12345").getBarcode());
+        assertEquals("Fruit", this.store.getProduct("12345").getCategory());
         assertEquals("Apple", this.store.getProduct("12345").getProductName());
-        assertTrue(this.store.getProduct("12345").hasDiscount());
-        assertEquals(10.2, this.store.getProduct("12345").finalPricePerUnit(5), 1e-15);
-        assertEquals(8.2, this.store.getProduct("12345").finalPricePerUnit(10), 1e-15);
+        assertEquals(1002, this.store.getProduct("12345").getBasePrice());
+        assertEquals(1002, this.store.getProduct("12345").getFinalPrice(5));
+        assertEquals(500, this.store.getProduct("12345").getFinalPrice(10));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddSameProduct()
     {
-        this.store.addNewProduct(new Product("12345", "test", "test", 10));
+        this.store.addNewProductToStore("12345,test,test,10,10");
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void testGetNonexistingProduct()
+    public void testGetNonExistingProduct()
     {
-        this.store.getProduct("nonexisting");
+        this.store.getProduct("nonExisting");
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void testAddDiscountToNonexistingProduct()
+    public void testAddDiscountToNonExistingProduct()
     {
-        this.store.addNewDiscount("nonexisting", new Price(10, 10));
+        this.store.addNewDiscountToStore("nonExisting,10,10,10");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testWrongFormatProduct()
+    {
+        this.store.addNewProductToStore("1235,test,test,10");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testWrongFormatDiscount()
+    {
+        this.store.addNewDiscountToStore("1235,test");
     }
 }

@@ -120,8 +120,8 @@ public class Product
      *
      * @param boughtAmount The amount of this product that was bought
      *
-     * @return The {@code final price} of the product - {@code discounted price} if <em>enough amount</em> is bought,
-     * {@code base price} otherwise
+     * @return The {@code final price} of the product - {@code discounted price} if <em>enough amount</em>
+     * is bought, {@code base price} otherwise
      */
     public int getFinalPrice(int boughtAmount)
     {

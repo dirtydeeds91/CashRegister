@@ -1,0 +1,2 @@
+1,Fruit,Orange,24,95
+2,Fruit,Apple,25,50

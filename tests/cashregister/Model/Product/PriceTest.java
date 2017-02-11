@@ -24,7 +24,7 @@ public class PriceTest
         assertEquals(212, price.getFinalPrice(50));
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void multipleDiscountsTest()
     {
         Price price = new Price(120);
