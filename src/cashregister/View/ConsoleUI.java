@@ -1,18 +1,14 @@
 package cashregister.View;
 
 import cashregister.Controller.Controller;
-import cashregister.Model.*;
+import cashregister.Model.Receipt.Receipt;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 /**
  * The console GUI for the cash register.
@@ -232,15 +228,15 @@ public class ConsoleUI
         if (currentOrAll.equals("all"))
         {
             double total = 0;
-            for (Receipt receipt : controller.getCashRegister().getHistory())
-            {
-                total += receipt.calculateTotalPrice();
-            }
-
-            if (controller.getCashRegister().getCurrentReceipt() != null)
-            {
-                total += controller.getCashRegister().getCurrentReceipt().calculateTotalPrice();
-            }
+//            for (Receipt receipt : controller.getCashRegister().getHistory())
+//            {
+//                total += receipt.calculateTotalPrice();
+//            }
+//
+//            if (controller.getCashRegister().getCurrentReceipt() != null)
+//            {
+//                total += controller.getCashRegister().getCurrentReceipt().();
+//            }
 
 
             //Create the symbols formatter, which ensures the numbers use a comma and not dot for trailing points
@@ -262,7 +258,7 @@ public class ConsoleUI
             }
 
             Receipt lastReceipt = controller.getCashRegister().getCurrentReceipt();
-            System.out.println(lastReceipt.toString());
+            System.out.println(lastReceipt.getReceipt());
         }
         else
         {
@@ -273,7 +269,7 @@ public class ConsoleUI
 
                 Receipt generatedReceipt = controller.getCashRegister().getCurrentReceipt();
 
-                System.out.println(generatedReceipt.toString());
+                System.out.println(generatedReceipt.getReceipt());
             }
             catch (FileNotFoundException e)
             {

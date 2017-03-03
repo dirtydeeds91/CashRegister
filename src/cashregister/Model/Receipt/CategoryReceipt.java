@@ -1,4 +1,4 @@
-package cashregister.Model;
+package cashregister.Model.Receipt;
 
 import cashregister.Model.Product.Product;
 
@@ -7,117 +7,95 @@ import java.text.DecimalFormatSymbols;
 import java.util.*;
 
 /**
- * Holds a list of all products that were bought
+ * The {@code CategoryReceipt} class keeps track of all
+ * categories of products which were added in the basket.
+ *
+ * Example:
+ *               * MEJERI *
+ * FRILANDSÆG                      25,95
+ * SKUMMETMÆLK
+ * 3 x 5,95                        17,85
+ * SKYR YOGHURT
+ * 2 x 22,75                       45,50
+ * RABAT                           19,50-
+ *
+ *          * ØVR. FØDEVARER *
+ * BØNNEKAFFE                      55,50
+ * KERNEBRØD                       20,75
+ *
+ * TOTAL                          101,90
+ *
+ * KØBET HAR UDLØST 2 MÆRKER
+ *
+ * MOMS UDGØR                      20,38
+ *
+ * @see BaseReceipt
+ *
+ * @author Ivan Mladenov
  */
-public class Receipt
+public class CategoryReceipt extends BaseReceipt
 {
     private final int lineLength = 38;
     private final String lineWithPriceFormat = "%-28s%10s";
     private final double kronerPerMark = 50.0;
     private final double salesTaxPercent = 25.0;
+    private final char decimalSeparator = ',';
 
-    private Map<Product, Integer> productsBought;
-    private Map<String, List<Product>> productsInCategory;
+    private Map<String, Set<Product>> productsInCategory;
 
     /**
-     * Creates a new receipt with an empty "cart"
+     * Constructor that creates a new "Category" type receipt.
+     *
+     * It will also call the parent class constructor.
+     *
+     * @see BaseReceipt#BaseReceipt()
      */
-    public Receipt()
+    public CategoryReceipt()
     {
-        this.productsBought = new HashMap<>();
+        super();
         this.productsInCategory = new HashMap<>();
     }
 
     /**
-     * Adds a product to the receipt. A product can be added more than once.
-     * @param productToAdd Product that is to be added to the receipt.
+     * Adds a specified product to the basket and
+     * registers the category of the product so it
+     * can later be printed. Calls base functionality
+     *
+     * @param productToAdd      Product to be added to the basket
+     *
+     * @see BaseReceipt#addProductToReceipt(Product)
      */
+    @Override
     public void addProductToReceipt(Product productToAdd)
     {
-        //Check if the product has been previously bought
-        if (this.productsBought.containsKey(productToAdd))
-        {
-            //...It has, so increment the count bought
-            int totalCount = this.productsBought.get(productToAdd) + 1;
-            this.productsBought.put(productToAdd, totalCount);
-        }
-        else
-        {
-            //..It hasn't, so insert it in the map with a starting count of 1
-            this.productsBought.put(productToAdd, 1);
+        //Executes the base method
+        super.addProductToReceipt(productToAdd);
 
-            //Also, since the product hasn't been added yet - add it to the category Map
-            //This ensures a product is seen only once in this map
+        //If the product has been added successfully (or has been added before)...
+        if (super.productsBought.containsKey(productToAdd))
+        {
+            //Get the product's category
             String productCategory = productToAdd.getCategory();
 
-            //Start with an empty list
-            List<Product> listOfProductsInCategory = new ArrayList<>();
-
-            if (this.productsInCategory.containsKey(productCategory))
+            //Check if the category is registered in the map
+            if (!this.productsInCategory.containsKey(productCategory))
             {
-                //The category already exists, so assign its list to the list variable above
-                listOfProductsInCategory = this.productsInCategory.get(productCategory);
+                //It hasn't, so add it
+                this.productsInCategory.put(productCategory, new HashSet<>());
             }
 
-            //Add the current product to the list
-            listOfProductsInCategory.add(productToAdd);
-
-            //Update the map to add the product to its respectful category
-            this.productsInCategory.put(productCategory, listOfProductsInCategory);
+            //Get the category's set and add the product to it (Set makes sure the product exists only once)
+            Set<Product> categorySet = this.productsInCategory.get(productCategory);
+            categorySet.add(productToAdd);
         }
     }
 
-    /**
-     * Calculates the total price of the receipt, discounts included
-     * @return the final price of the receipt
-     */
-    public double calculateTotalPrice()
-    {
-        int totalPrice = 0;
-
-        //Go through every product in the receipt
-        for (Map.Entry<Product, Integer> productBought : this.productsBought.entrySet())
-        {
-            //Get amount which was bought
-            int boughtAmount = productBought.getValue();
-
-            //Generate the final product price based on bought amount (discount included if possible) and add it to total
-            totalPrice += calculatePriceOneProduct(productBought.getKey(), boughtAmount, false);
-        }
-
-        return (double)totalPrice / 100.0;
-    }
-
-    /**
-     * Calculates the final price of one product, based on amount bought
-     * @param product Product that was bought
-     * @param boughtAmount Amount that was bought
-     * @param doNotUseDiscount If true, will calculate price without the discount
-     * @return The final price of one product
-     */
-    private double calculatePriceOneProduct(Product product, int boughtAmount, boolean doNotUseDiscount)
-    {
-        if (doNotUseDiscount)
-        {
-            //Specifically use normal price only, without thinking about discount
-            return (double)(product.getBasePrice() * boughtAmount);
-        }
-        else
-        {
-            //Use discount if possible
-            return (double)(product.getFinalPrice(boughtAmount) * boughtAmount);
-        }
-    }
-
-    /**
-     * Generates a String representation of the receipt, ordered by categories
-     * @return String representation of the receipt
-     */
     public String toString()
     {
         //Create the symbols formatter, which ensures the numbers use a comma and not dot for trailing points
         DecimalFormatSymbols priceFormatSymbols = new DecimalFormatSymbols();
-        priceFormatSymbols.setDecimalSeparator(',');
+        priceFormatSymbols.setDecimalSeparator(decimalSeparator);
+
         //Create the object that formats prices to two decimal trailing points
         DecimalFormat priceFormat = new DecimalFormat("0.00", priceFormatSymbols);
 
@@ -128,7 +106,7 @@ public class Receipt
         builder.append("\n");
 
         //Go through all categories
-        for (Map.Entry<String, List<Product>> keyValPair : this.productsInCategory.entrySet())
+        for (Map.Entry<String, Set<Product>> keyValPair : this.productsInCategory.entrySet())
         {
             //Start off by adding the category
             String category = "* " + keyValPair.getKey() + " *";
@@ -146,7 +124,7 @@ public class Receipt
             {
                 //Get the bought quantity of the product
                 int quantityBought = this.productsBought.get(product);
-                double productPrice = this.calculatePriceOneProduct(product, quantityBought, true) / 100.0;
+                double productPrice = super.getProductPrice(product, quantityBought, true) / 100.0;
 
                 //If the product is bought only once, the price is on the same line
                 if (quantityBought == 1)
@@ -179,14 +157,14 @@ public class Receipt
                 if (product.getFinalPrice(quantityBought) != product.getBasePrice())
                 {
                     //Calculate how much the discount is
-                    double rabat = calculatePriceOneProduct(product, quantityBought, true) -
-                                   calculatePriceOneProduct(product, quantityBought, false);
+                    int rabat = super.getProductPrice(product, quantityBought, true) -
+                                   super.getProductPrice(product, quantityBought, false);
 
                     //Generate a string for the discount
                     String rabatString = String.format(
                             lineWithPriceFormat,
                             "RABAT",
-                            priceFormat.format(rabat / 100.0));
+                            priceFormat.format((double)rabat / 100.0));
 
                     //Add it to the final string, with a "-" at the end as specified
                     builder.append(rabatString + "-\n");
@@ -199,7 +177,7 @@ public class Receipt
 
         //TOTAL
         //Generate the total price
-        double totalPrice = calculateTotalPrice();
+        double totalPrice = super.totalPrice() / 100.0;
 
         //Generate a string out of it
         String totalString = String.format(

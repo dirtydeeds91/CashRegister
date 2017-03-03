@@ -19,7 +19,8 @@ class Price
     /**
      * Constructor that initializes a new price object with initial values.
      *
-     * @param price The normal price of the product. Must be {@code non-negative}
+     * @param price     The normal price of the product.
+     *                  Must be {@code non-negative}
      */
     public Price(int price)
     {
@@ -33,8 +34,9 @@ class Price
     /**
      * Adds a new discount to the product's prices.
      *
-     * @param minQuantity Minimum quantity that needs to be bought
-     * @param discountedPrice The discounted price of the product. Must be {@code non-negative}
+     * @param minQuantity               Minimum quantity that needs to be bought
+     * @param discountedPrice           The discounted price of the product.
+     *                                  Must be {@code non-negative}
      *
      * @throws IllegalArgumentException if a negative price is provided as a parameter
      */
@@ -52,7 +54,7 @@ class Price
     /**
      * Removes one <em>discount</em> of the product's price range
      *
-     * @param quantity Quantity that is associated with the price
+     * @param quantity                  Quantity that is associated with the price
      *
      * @throws IllegalArgumentException if the operation will remove the base price
      */
@@ -90,9 +92,10 @@ class Price
     /**
      * Getter method for returning the base price of a product (without any discounts applied).
      *
-     * @return The base price of a product. Will be {@code non-negative}
+     * @return                          The base price of a product.
+     *                                  Will be {@code non-negative}
      *
-     * @throws NoSuchElementException if the product doesn't have a base price
+     * @throws NoSuchElementException   if the product doesn't have a base price
      */
     public int getBasePrice() throws NoSuchElementException
     {
@@ -107,11 +110,11 @@ class Price
     /**
      * Getter method for retrieving the price of a product, based on the quantity bought.
      *
-     * @param amountBought The quantity that was purchased
+     * @param amountBought              The quantity that was purchased
      *
-     * @return The final price of the product
+     * @return                          The final price of the product
      *
-     * @throws NoSuchElementException if the price map is empty (no actual prices added)
+     * @throws NoSuchElementException   if the price map is empty (no actual prices added)
      */
     public int getFinalPrice(int amountBought) throws NoSuchElementException
     {
@@ -137,7 +140,7 @@ class Price
         if (finalPrice < 0)
         {
             //Throw an exception if the current price is negative
-            throw new NoSuchElementException("There is no discount possible for this product and specified amount");
+            throw new NoSuchElementException("There is no price possible for this product and specified amount");
         }
         else
         {

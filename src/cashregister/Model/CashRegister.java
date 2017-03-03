@@ -1,7 +1,10 @@
 package cashregister.Model;
 
-import cashregister.HelperFunctions;
 import cashregister.Model.Product.Product;
+import cashregister.Model.Receipt.BaseReceipt;
+import cashregister.Model.Receipt.CategoryReceipt;
+import cashregister.Model.Receipt.Receipt;
+import cashregister.Model.Receipt.SimpleReceipt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ public class CashRegister
      */
     public void startNewReceipt()
     {
-        Receipt newReceipt = new Receipt();
+        Receipt newReceipt = new CategoryReceipt();
         this.receiptHistory.add(newReceipt);
         this.currentReceiptId = this.receiptHistory.size() - 1;
     }

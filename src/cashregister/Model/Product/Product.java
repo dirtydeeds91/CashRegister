@@ -19,14 +19,14 @@ public class Product
     /**
      * Constructor that initializes a new product object.
      *
-     * @param barcode The new product's barcode
-     * @param category The new product's category
-     * @param productName The new product's name
-     * @param price The new product's base price
+     * @param barcode                   The new product's barcode
+     * @param category                  The new product's category
+     * @param productName               The new product's name
+     * @param price                     The new product's base price
      *
      * @throws IllegalArgumentException if any of the parameters are empty or null
      */
-    public Product(String barcode, String category, String productName, int price)
+    public Product(String barcode, String category, String productName, int price) throws IllegalArgumentException
     {
         //Ensures that the product's details are not null
         if (barcode == null ||
@@ -55,7 +55,7 @@ public class Product
     /**
      * Getter method for retrieving the barcode of a product
      *
-     * @return The barcode of the product
+     * @return              The barcode of the product
      */
     public String getBarcode()
     {
@@ -64,7 +64,8 @@ public class Product
 
     /**
      * Getter method for retrieving the category of a product
-     * @return The category of the product
+     *
+     * @return              The category of the product
      */
     public String getCategory()
     {
@@ -74,7 +75,7 @@ public class Product
     /**
      * Getter method for retrieving the name of a product
      *
-     * @return The name of the product
+     * @return              The name of the product
      */
     public String getProductName()
     {
@@ -84,8 +85,8 @@ public class Product
     /**
      * Changes or adds a new price associated with the product
      *
-     * @param quantityRequirement The quantity that is required to trigger this price
-     * @param discountedPrice The price that will be used if the quantity is bought
+     * @param quantityRequirement       The quantity that is required to trigger this price
+     * @param discountedPrice           The price that will be used if the quantity is bought
      */
     public void addDiscount(int quantityRequirement, int discountedPrice)
     {
@@ -96,7 +97,7 @@ public class Product
     /**
      * Change the base price of the product.
      *
-     * @param newBasePrice The new base price of this product
+     * @param newBasePrice          The new base price of this product
      */
     public void changeBasePrice(int newBasePrice)
     {
@@ -107,7 +108,7 @@ public class Product
     /**
      * Getter method for retrieving the base price of a product
      *
-     * @return The base price of the product
+     * @return                      The base price of the product
      */
     public int getBasePrice()
     {
@@ -118,10 +119,11 @@ public class Product
      * Gets the <em>final price</em> of a product, based on the amount that was bought.
      * This will check for any possible <em>discounts</em>.
      *
-     * @param boughtAmount The amount of this product that was bought
+     * @param boughtAmount      The amount of this product that was bought
      *
-     * @return The {@code final price} of the product - {@code discounted price} if <em>enough amount</em>
-     * is bought, {@code base price} otherwise
+     * @return                  The {@code final price} of the product -
+     *                          {@code discounted price} if <em>enough amount</em>
+     *                          is bought, {@code base price} otherwise
      */
     public int getFinalPrice(int boughtAmount)
     {
